@@ -1,0 +1,48 @@
+{
+  "model": "T3_tfidf_word_char_svm",
+  "task": "Indonesian criminal judgment crime type classification",
+  "input_view": "no_citation",
+  "n_classes": 18,
+  "n_word_features": 300000,
+  "n_char_features": 200000,
+  "train_documents": 16871,
+  "metrics": {
+    "val": {
+      "accuracy": 0.982809721398933,
+      "macro_precision": 0.9515107815100445,
+      "macro_recall": 0.9565317826559517,
+      "macro_f1": 0.9521914499199722
+    },
+    "test": {
+      "accuracy": 0.9816296296296296,
+      "macro_precision": 0.9459612747823706,
+      "macro_recall": 0.9629964140532139,
+      "macro_f1": 0.9537631074825826
+    }
+  },
+  "versions": {
+    "python": "3.13.0",
+    "scikit_learn": "1.6.1",
+    "torch": "2.11.0+cu126"
+  },
+  "classes": [
+    "kesehatan_farmasi",
+    "kesusilaan",
+    "korupsi",
+    "lainnya",
+    "lalu_lintas",
+    "narkotika",
+    "pemalsuan",
+    "pembunuhan",
+    "pemerasan_pengancaman",
+    "penadahan",
+    "pencurian",
+    "penganiayaan",
+    "penggelapan",
+    "penipuan",
+    "perdagangan_orang",
+    "perjudian",
+    "senjata",
+    "sumber_daya_alam"
+  ]
+}
