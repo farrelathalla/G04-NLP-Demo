@@ -1,0 +1,4 @@
+# Sample decisions must keep their exact bytes (CRLF) for the round trip check.
+backend/demo/docs/*.txt -text
+*.pdf binary
+*.joblib binary
