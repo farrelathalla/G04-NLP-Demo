@@ -1,0 +1,20 @@
+{
+  "champion": "H4_nnls_blend",
+  "runner_up": "H3_range_proba_lgbm",
+  "test": {
+    "test_mae": 7.6392,
+    "ci_low": 6.9723,
+    "ci_high": 8.4348,
+    "test_rmse": 14.8404,
+    "test_r2": 0.8714,
+    "test_medae": 3.23
+  },
+  "documents": {
+    "train": 11823,
+    "unl": 7070,
+    "val": 2343,
+    "test": 2325,
+    "excluded": 114
+  },
+  "smoke_test": false
+}

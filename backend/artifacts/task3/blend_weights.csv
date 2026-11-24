@@ -1,0 +1,13 @@
+,weight
+H3_range_proba_lgbm,0.40467520241042343
+H1_stack_lgbm,0.23581717689735773
+H2_demand_anchor_lgbm,0.0
+S3_facts_catboost,0.24440463960417128
+S0_demand_rule,0.0
+S2_facts_lgbm,0.0
+S1_facts_ridge,0.0
+A2_nusabert_hierarchical,0.0736033946511225
+T2_tfidf_word_char_svr,0.044022221557469224
+T3_tfidf_svd_lgbm,0.0
+T1_tfidf_ridge,0.0
+A1_e5_mlp,0.0
