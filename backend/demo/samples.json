@@ -1,0 +1,52 @@
+[
+  {
+    "id": "doc_15089",
+    "title": "Narcotics possession case",
+    "crime_type": "narkotika",
+    "court": "Pengadilan Negeri Medan",
+    "year": 2019,
+    "pages": 8,
+    "pdf": "/samples/doc_15089.pdf",
+    "true_months": 48.0
+  },
+  {
+    "id": "doc_19992",
+    "title": "Theft case",
+    "crime_type": "pencurian",
+    "court": null,
+    "year": 2024,
+    "pages": 10,
+    "pdf": "/samples/doc_19992.pdf",
+    "true_months": 8.0
+  },
+  {
+    "id": "doc_14900",
+    "title": "Assault during a village road repair",
+    "crime_type": "penganiayaan",
+    "court": "Pengadilan Negeri Sumbawa",
+    "year": 2020,
+    "pages": 9,
+    "pdf": "/samples/doc_14900.pdf",
+    "true_months": 4.0
+  },
+  {
+    "id": "doc_2138",
+    "title": "Receiving stolen goods case",
+    "crime_type": "penadahan",
+    "court": "Pengadilan Negeri Raba Bima",
+    "year": 2020,
+    "pages": 7,
+    "pdf": "/samples/doc_2138.pdf",
+    "true_months": 4.0
+  },
+  {
+    "id": "doc_2799",
+    "title": "Sharp weapon possession case",
+    "crime_type": "senjata",
+    "court": "Pengadilan Negeri Lahat",
+    "year": 2019,
+    "pages": 10,
+    "pdf": "/samples/doc_2799.pdf",
+    "true_months": 16.0
+  }
+]
