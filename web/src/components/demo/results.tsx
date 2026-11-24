@@ -16,6 +16,7 @@ import {
   formatMonths,
   formatSlot,
   isMissing,
+  SECTION_NAMES,
   SLOT_GROUPS,
   SLOT_LABELS,
 } from "@/lib/labels";
@@ -337,6 +338,115 @@ function FactorList({ title, codes, evidence, tone }: { title: string; codes: st
   );
 }
 
+/* ---------- Task 2 details ---------- */
+
+const ENTITY_TYPES: { tag: string; name: string; slot: string }[] = [
+  { tag: "AGE", name: "Age", slot: "defendant_age" },
+  { tag: "DEMAND", name: "Prosecutor demand", slot: "prosecutor_demand_months" },
+  { tag: "ARTICLE", name: "Article", slot: "article_charged" },
+  { tag: "VICTIM", name: "Victim count", slot: "victim_count" },
+  { tag: "INJURY", name: "Injury", slot: "victim_injury" },
+  { tag: "WEAPON", name: "Weapon", slot: "weapon_used" },
+  { tag: "LOSS", name: "Loss value", slot: "loss_value" },
+  { tag: "AGG", name: "Aggravating", slot: "aggravating_factors" },
+  { tag: "MIT", name: "Mitigating", slot: "mitigating_factors" },
+];
+
+function Task2Details({ result }: { result: AnalyzeResult }) {
+  const t = result.task2;
+  const spans = t.bert?.spans ?? {};
+  const maxParagraphs = Math.max(1, ...t.sections.map((s) => s.paragraphs));
+  return (
+    <div className="grid gap-6 md:grid-cols-2">
+      <div className="space-y-6">
+        <div>
+          <p className="mb-2 text-xs font-medium text-muted-foreground">A. Preprocessing</p>
+          <div className="grid grid-cols-2 gap-2 text-sm">
+            <MiniStat label="Words before cleaning" value={t.stats.raw_words.toLocaleString("en-US")} />
+            <MiniStat label="Words after cleaning" value={t.stats.clean_words.toLocaleString("en-US")} />
+            <MiniStat label="Names replaced" value={String(t.stats.pseudonym_replacements)} />
+            <MiniStat label="Verdict parts masked" value={String(t.stats.verdict_masked)} />
+          </div>
+          {t.pseudonym_example && (
+            <p className="mt-2 rounded-md border bg-muted/30 px-3 py-2 font-mono text-xs">{t.pseudonym_example}</p>
+          )}
+          <p className="mt-2 text-xs text-muted-foreground">
+            Crime type used for the rules: <span className="font-medium text-foreground">{crimeName(t.crime_type_used)}</span>
+          </p>
+        </div>
+
+        <div>
+          <p className="mb-2 text-xs font-medium text-muted-foreground">
+            B. Sections found, {t.paragraphs} paragraphs in total
+          </p>
+          <div className="space-y-1.5">
+            {t.sections.map((s) => (
+              <Tooltip key={s.name}>
+                <TooltipTrigger asChild>
+                  <div className="grid cursor-help grid-cols-[130px_1fr_32px] items-center gap-3 text-xs">
+                    <span className="truncate">{SECTION_NAMES[s.name] ?? s.name}</span>
+                    <div className="h-2 rounded-full bg-muted">
+                      <motion.div
+                        className="h-2 rounded-full bg-accent-brand"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(s.paragraphs / maxParagraphs) * 100}%` }}
+                        transition={{ duration: 0.5 }}
+                      />
+                    </div>
+                    <span className="text-right font-mono text-muted-foreground">{s.paragraphs}</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-sm font-mono text-xs">{s.preview}</TooltipContent>
+              </Tooltip>
+            ))}
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">Hover a section to see its first line.</p>
+        </div>
+      </div>
+
+      <div>
+        <p className="mb-2 text-xs font-medium text-muted-foreground">C. IndoBERT spans</p>
+        {!t.bert || t.bert.skipped ? (
+          <p className="rounded-md border px-3 py-2 text-sm text-muted-foreground">
+            IndoBERT was not run. {t.bert?.skipped ? `Reason: ${t.bert.skipped}.` : "The model weights are not loaded."}
+          </p>
+        ) : (
+          <>
+            <p className="mb-3 text-xs text-muted-foreground">
+              {t.bert.windows} windows of 256 tokens over {t.bert.excerpt_chars?.toLocaleString("en-US")} characters.
+              Spans marked Used fill the final record.
+            </p>
+            <div className="divide-y rounded-lg border">
+              {ENTITY_TYPES.map((e) => {
+                const found = spans[e.tag] ?? [];
+                const used = t.route[e.slot] === "bert";
+                return (
+                  <div key={e.tag} className="space-y-1.5 px-3 py-2">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="font-mono text-[10px]">{e.tag}</Badge>
+                      <span className="text-sm">{e.name}</span>
+                      {used && <Badge className="ml-auto text-[10px]">Used</Badge>}
+                    </div>
+                    {found.length === 0 ? (
+                      <p className="text-xs text-muted-foreground">No span found</p>
+                    ) : (
+                      found.map((span, i) => (
+                        <p key={i} className="line-clamp-2 font-mono text-xs text-muted-foreground">
+                          “{span}”
+                        </p>
+                      ))
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ---------- details ---------- */
 
 function Details({ result }: { result: AnalyzeResult }) {
@@ -356,6 +466,7 @@ function Details({ result }: { result: AnalyzeResult }) {
           <TabsList>
             <TabsTrigger value="text">Extracted text</TabsTrigger>
             <TabsTrigger value="task1">Task 1 details</TabsTrigger>
+            <TabsTrigger value="task2">Task 2 details</TabsTrigger>
             <TabsTrigger value="task3">Task 3 details</TabsTrigger>
           </TabsList>
 
@@ -411,6 +522,10 @@ function Details({ result }: { result: AnalyzeResult }) {
                 </div>
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="task2" className="mt-4">
+            <Task2Details result={result} />
           </TabsContent>
 
           <TabsContent value="task3" className="mt-4 grid gap-6 md:grid-cols-2">
