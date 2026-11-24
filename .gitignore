@@ -1,0 +1,14 @@
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+
+# Model weights, too large for git. See README for where to put them.
+backend/artifacts/task1/*.pt
+backend/artifacts/task2/bert_model/model.safetensors
+backend/artifacts/task2/bert_model/*.jsonl
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db
